@@ -28,10 +28,12 @@ export async function getHotels(req:AuthenticatedRequest, res:Response){
 
 }
 
-export async function getHotelsById(req:Request, res:Response):Promise<HotelId>{
-    const {hotetId} = req
+export async function getHotelsById(req:AuthenticatedRequest, res:Response){
+    const {userId} = req
+    const {hotelId} = req.params
+    const numberHotelId = parseInt(hotelId)
     try{
-        const hotelById = await hotelsService.getHotelsById(hotelId)
+        const hotelById = await hotelsService.getHotelsById(userId,numberHotelId)
 
         return res.status(httpStatus.OK).send(hotelById)
     }catch(error){

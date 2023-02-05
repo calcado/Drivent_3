@@ -5,7 +5,13 @@ function getAllHotels():Promise<Hotel[]>{
     return prisma.hotel.findMany({});    
 }
 
-function getHotelbyId(id:number){
+function getHotelbyId(id:number):Promise<Hotel>{
+    return prisma.hotel.findFirst({
+        where:{id}
+    })
+}
+
+function getRoomsbyId(id:number):Promise<Hotel>{
     return prisma.hotel.findFirst({
         where:{id},
         include:{
@@ -17,7 +23,8 @@ function getHotelbyId(id:number){
 
 const hotelsRepository={
     getAllHotels,
-    getHotelbyId
+    getHotelbyId,
+    getRoomsbyId
 }
 
 export default hotelsRepository;

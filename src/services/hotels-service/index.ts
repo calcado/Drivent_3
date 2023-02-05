@@ -31,6 +31,7 @@ async function getHotels(userId:number):Promise<Hotel[]>{
         throw PaymentRequiredError();
     }
 
+
     const hotels = await hotelsRepository.getAllHotels()    
     console.log(hotels)
     if(!hotels){
@@ -39,19 +40,42 @@ async function getHotels(userId:number):Promise<Hotel[]>{
     return hotels
 }
 
-// async function getHotelsById(id:number){
-//     const hotelById = await hotelsRepository.getHotelbyId(id)
-    
-//     if(!hotelById){
-//         throw notFoundError();
-//     }
-//     return hotelById
+async function getHotelsById(userId:number, hotelId:number):Promise<Hotel>{
+    const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
 
-// }
+    if(!enrollment){
+        throw notFoundError();
+    }
+
+    const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id)
+    if(!ticket){
+        throw notFoundError();
+    }
+    if(ticket.status!=="PAID"){
+        throw PaymentRequiredError();        
+    }
+    if(ticket.TicketType.includesHotel){
+        throw PaymentRequiredError();
+    }
+
+    
+    const hotelById = await hotelsRepository.getHotelbyId(hotelId)
+    
+    if(!hotelById){
+        throw notFoundError();
+    }
+
+    const rooms = await hotelsRepository.getRoomsbyId(hotelId)
+    if(!rooms){
+        throw notFoundError();
+    }
+    return rooms
+
+}
 
 const hotelsService = {
     getHotels,
-    // getHotelsById
+    getHotelsById
 }
 
 export default hotelsService
