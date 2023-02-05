@@ -1,6 +1,5 @@
 import { notFoundError, PaymentRequiredError } from "@/errors";
 import { Hotels } from "@/protocols";
-import {} from "@prisma/client"
 import enrollmentRepository from "@/repositories/enrollment-repository";
 import hotelsRepository from "@/repositories/hotels-repository";
 import ticketRepository from "@/repositories/ticket-repository";
@@ -8,7 +7,7 @@ import { PAYMENT_REQUIRED } from "http-status";
 import { Hotel } from "@prisma/client";
 
 
-async function getHotels(userId:number):Promise<Hotel>{
+async function getHotels(userId:number):Promise<Hotel[]>{
     //Não existe (inscrição, ticket ou hotel): 404 (not found)
     const enrollments = await enrollmentRepository.findWithAddressByUserId(userId)
     if(!enrollments){
