@@ -9,9 +9,12 @@ import { createEvent, createUser } from "../factories";
 import { cleanDb } from "../helpers";
 
 beforeAll(async () => {
-  await init();
-  await cleanDb();
+  await init();  
 });
+
+beforeEach(async ()=>{
+  await cleanDb();
+})
 
 const server = supertest(app);
 
