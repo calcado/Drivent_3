@@ -1,7 +1,8 @@
 import { prisma } from "@/config";
+import { Hotel } from "@prisma/client";
 
-function getAllHotels(){
-    return prisma.hotel.findMany();    
+function getAllHotels():Promise<Hotel[]>{
+    return prisma.hotel.findMany({});    
 }
 
 function getHotelbyId(id:number){
