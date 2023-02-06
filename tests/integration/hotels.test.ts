@@ -5,6 +5,10 @@ import httpStatus from "http-status";
 
 beforeAll(async ()=>{
     await init();
+    
+})
+
+afterEach(async ()=>{
     await cleanDb();
 })
 
@@ -18,6 +22,11 @@ it("It should respond with 200 and all hotels in success", async ()=>{
     expect(response.status).toEqual(httpStatus.OK)
     
 })
+
+
+
+
+
 
 describe("GET /hotels/:id", ()=>{
 
