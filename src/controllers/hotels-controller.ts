@@ -1,6 +1,6 @@
 import { Request,Response } from "express";
 import hotelsService from "@/services/hotels-service";
-import httpStatus from "http-status";
+import httpStatus, { NOT_FOUND } from "http-status";
 import { AuthenticatedRequest } from "@/middlewares";
 import { HotelId } from "@/protocols";
 
@@ -37,7 +37,17 @@ export async function getHotelsById(req:AuthenticatedRequest, res:Response){
 
         return res.status(httpStatus.OK).send(hotelById)
     }catch(error){
-        return res.sendStatus(httpStatus.NOT_FOUND)
+        
+        if(error.name==="NotFoundError"){
+            return res.sendStatus(httpStatus.NOT_FOUND)
+        }
+        
+
+        if(error.name==="PaymentRequiredError"){
+            return res.sendStatus(httpStatus.PAYMENT_REQUIRED)
+        }
+
+        return res.sendStatus(httpStatus.BAD_REQUEST)
     }
 
 }
