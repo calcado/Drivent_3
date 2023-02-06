@@ -46,7 +46,7 @@ export type Hotels =
     
   }
 
-export type HotelId = 
+export type HotelIdType = 
 {
   hotelId: number
 }

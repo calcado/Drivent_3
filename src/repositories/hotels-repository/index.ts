@@ -1,5 +1,5 @@
 import { prisma } from "@/config";
-import { Hotel } from "@prisma/client";
+import { Hotel,Room } from "@prisma/client";
 
 function getAllHotels():Promise<Hotel[]>{
     return prisma.hotel.findMany({});    
@@ -11,7 +11,8 @@ function getHotelbyId(id:number):Promise<Hotel>{
     })
 }
 
-function getRoomsbyId(id:number):Promise<Hotel>{
+function getRoomsbyId(id:number):Promise<Hotel & {
+    Rooms:Room[]}>{
     return prisma.hotel.findFirst({
         where:{id},
         include:{

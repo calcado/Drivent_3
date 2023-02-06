@@ -1,10 +1,8 @@
 import { ApplicationError } from "@/protocols";
 
-export function  PaymentRequiredError():ApplicationError{
+export function  PaymentRequiredError(message:string):ApplicationError{
     return{
-
         name:"PaymentRequiredError",
-        message:"Error in payment"
-
+        message,
     }
 }
