@@ -39,23 +39,25 @@ async function getHotels(userId:number):Promise<Hotel[]>{
 
 async function getHotelsById(userId:number, hotelId:number):Promise<Hotel>{
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId)
-
+    
     if(!enrollment){
         throw notFoundError();
     }
 
     const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id)
+    
+    
     if(!ticket){
         throw notFoundError();
     }
     if(ticket.status!=="PAID"){
-        throw PaymentRequiredError("Ticket not paid");        
+        throw PaymentRequiredError("Ticket is not paid");        
     }
     if(ticket.TicketType.isRemote){
         throw PaymentRequiredError("Ticket is remote")
     }
 
-    if(ticket.TicketType.includesHotel){
+    if(!ticket.TicketType.includesHotel){
         throw PaymentRequiredError("Ticket does not includes hotel");
     }
 
@@ -70,6 +72,7 @@ async function getHotelsById(userId:number, hotelId:number):Promise<Hotel>{
     if(!rooms){
         throw notFoundError();
     }
+    console.log("rooms"+rooms)
 
     return rooms
 
